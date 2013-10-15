@@ -18,7 +18,7 @@ def enum(**enums):
 
 def ip2long(ip):
 	packed = socket.inet_aton(ip)
-	return struct.unpack('!L', packed)[0]
+	return long(struct.unpack('!L', packed)[0])
 
 def long2ip(lg):
 	return socket.inet_ntoa(struct.pack('!L', lg))
