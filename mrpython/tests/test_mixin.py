@@ -33,7 +33,7 @@ class ChildClass(DictInterface):
 	def __init__(self, parent):
 		self.name = 'Bobby the Kid'
 		self.parent = parent
-		self.billy = LostChildClass(self, parent)
+		self.lost_child = LostChildClass(self, parent)
 		self.friend = f
 
 class LostChildClass(DictInterface):
@@ -52,19 +52,6 @@ class FriendZone(DictInterface):
 f = FriendZone()
 
 def test_dict_interface():
-	'''
-	s = SomeDictClass()
-	assert_equal(s.to_dict(), {'name': 'Fred', 'email': 'datfredguy@gmail.com', 'password': 'whyismyencryptionnotworking', 'my_favorite_number': '7'})
-	assert_equal(s.to_dict(strings=False), {'name': 'Fred', 'email': 'datfredguy@gmail.com', 'password': 'whyismyencryptionnotworking', 'my_favorite_number': 7})
-	assert_equal(s.to_dict(only=['name']), {'name': 'Fred'})
-
-	a = AnotherDictClass()
-	assert_equal(a.to_dict(), {'name': 'Test Guy', 'email': 'test@nowhere.com'})
-	assert_in('name', p.to_dict().keys())
-	assert_in('child', p.to_dict().keys())
-	
-	'''
-	
 	p = ParentClass()
-	pprint(p.to_dict())
+	p.to_dict()
 
