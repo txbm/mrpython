@@ -12,3 +12,6 @@ A collection of functions, decorators and mini-modules that don't seem to fit in
 ## Data
 * STATES (dict)
 * ORDERED_STATES (OrderedDict)
+
+## Mixins
+* DictInterface
