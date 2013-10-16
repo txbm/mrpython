@@ -27,6 +27,7 @@ class ParentClass(DictInterface):
 	def __init__(self):
 		self.name = 'Frank the Dad'
 		self.child = ChildClass(self)
+		self.others = [ChildClass(self), ChildClass(self), ChildClass(self)]
 
 class ChildClass(DictInterface):
 
@@ -54,4 +55,3 @@ f = FriendZone()
 def test_dict_interface():
 	p = ParentClass()
 	p.to_dict()
-

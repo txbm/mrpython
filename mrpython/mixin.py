@@ -28,6 +28,8 @@ class DictInterface(object):
 						continue
 					parents.append(o)
 					c[attr] = _walk(value, parents)
+				elif hasattr(value, '__iter__'):
+					c[attr] = [_walk(v, parents) for v in value]
 				else:
 					c[attr] = value
 			return c
