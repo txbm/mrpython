@@ -12,7 +12,7 @@ class DictInterface(object):
 	def to_dict(self, only=[]):	
 
 		def _obj_to_dict(o, limit=[]):
-			names = self._dict_attrs or filter(lambda x: not x.startswith('_'), vars(o))
+			names = o._dict_attrs or filter(lambda x: not x.startswith('_'), vars(o))
 			if limit:
 				names = list(set(limit).intersection(set(names)))
 			return {k: getattr(o, k) for k in names}
