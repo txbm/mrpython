@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from datetime import datetime
 from pprint import pprint
 
 from nose.tools.trivial import assert_equal, assert_true, assert_in
@@ -13,6 +14,7 @@ class SomeDictClass(DictInterface):
 		self.email = 'datfredguy@gmail.com'
 		self.password = 'whyismyencryptionnotworking'
 		self.my_favorite_number = 7
+		self.birthday = datetime(year=2013, day=01, month=04, hour=12, minute=45, second=8)
 
 class AnotherDictClass(DictInterface):
 	_dict_attrs = ('name', 'email')
@@ -53,5 +55,7 @@ class FriendZone(DictInterface):
 f = FriendZone()
 
 def test_dict_interface():
+	s = SomeDictClass()
+	assert_equal(s.as_dict, {'name': 'Fred', 'email': 'datfredguy@gmail.com', 'password': 'whyismyencryptionnotworking', 'my_favorite_number': 7, 'birthday': '2013-04-01 12:45:08'})
 	p = ParentClass()
 	p.to_dict()

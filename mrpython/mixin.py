@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from datetime import datetime
 
 class DictInterface(object):
 
@@ -9,7 +9,7 @@ class DictInterface(object):
 	def as_dict(self):
 		return self.to_dict()
 
-	def to_dict(self, only=[]):	
+	def to_dict(self, only=[], date_format='%Y-%m-%d %H:%M:%S'):
 
 		def _obj_to_dict(o, limit=[]):
 			names = o._dict_attrs or filter(lambda x: not x.startswith('_'), vars(o))
@@ -30,6 +30,8 @@ class DictInterface(object):
 					c[attr] = _walk(value, parents)
 				elif hasattr(value, '__iter__'):
 					c[attr] = [_walk(v, parents) for v in value]
+				elif isinstance(value, datetime):
+					c[attr] = value.strftime(date_format)
 				else:
 					c[attr] = value
 			return c
