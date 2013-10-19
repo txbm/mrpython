@@ -1,5 +1,8 @@
 ## Changelog
-current version 0.0.5
+current version 0.0.6
+
+## v0.0.6
+* Fixed recursion bug.
 
 ## v0.0.5
 * Added a date_format argument to the ``` to_dict ``` method because other wise specifiing the output date format of any datetime field becomes a project. Was on the fence about this one, but the responsibility would be obtuse if left up to the application I think.

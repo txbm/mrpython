@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
 	name="mrpython",
-	version="0.0.5",
+	version="0.0.6",
 	url='http://github.com/petermelias/mrpython',
 	license='MIT',
 	author='Peter M. Elias',

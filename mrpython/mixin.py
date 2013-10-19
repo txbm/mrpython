@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from pprint import pprint
 
 from datetime import datetime
 
-def _step():
-	raw_input('Step >')
 
 class DictInterface(object):
 
