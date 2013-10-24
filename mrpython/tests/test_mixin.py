@@ -72,3 +72,5 @@ def test_dict_interface():
     })
     p = ParentClass()
     p.to_dict()
+    p.to_dict(recursion=True)
+    p.to_dict(recursion=1)
