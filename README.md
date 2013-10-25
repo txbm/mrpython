@@ -4,14 +4,13 @@
 A collection of functions, decorators and mini-modules that don't seem to fit into any of my (or anybody else's) libraries.
 
 ## Functions
-* autolog(message, level=logging.DEBUG)
-* enum(**enums)
-* ip2long(ip)
-* long2ip(long)
+* ``` autolog(message, level=logging.DEBUG) ```
+* ``` enum(**enums) ```
+* ``` ip2long(ip) ```
+* ``` long2ip(long) ```
+* ``` to_dict(o, limit=()) ```
+* ``` walk(value, graph_max=None, graph_interface=None) ```
 
 ## Data
 * STATES (dict)
 * ORDERED_STATES (OrderedDict)
-
-## Mixins
-* DictInterface
