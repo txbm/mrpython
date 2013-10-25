@@ -37,8 +37,9 @@ def to_dict(o, limit=()):
     return dict(m)
 
 
-def walk(value, graph_max=None, graph_interface=None,
-         _graph_path=[], _graph_current=0):
+def walk(
+    value, graph_max=None, graph_interface=None, limit_check='_dict_attrs',
+        _graph_path=[], _graph_current=0):
 
     def _recur(v):
         return walk(v, graph_max=graph_max, graph_interface=graph_interface,
@@ -60,7 +61,11 @@ def walk(value, graph_max=None, graph_interface=None,
         _graph_path.append(value)
         _graph_current = _graph_current + 1
 
-        value = to_dict(value)
+        if limit_check:
+            limits = getattr(value, limit_check, ())
+            value = to_dict(value, limit=limits)
+        else:
+            value = to_dict(value)
 
     if type(value) is dict:
         d = {}

@@ -48,7 +48,7 @@ def test_to_dict():
 
 def test_walk():
     class Graphable(object):
-        pass
+        _dict_attrs = ()
 
     class Parent(Graphable):
 
@@ -74,6 +74,15 @@ def test_walk():
         def friends(self):
             return [c for c in [p.children for p in self.parent.friends]]
 
+    class TestLimit(Graphable):
+
+        _dict_attrs = ('name', 'age')
+
+        def __init__(self):
+            self.name = 'Bob'
+            self.age = 12
+            self.country = 'USA'
+
     p = Parent()
     p.add_friend(Parent())
     p.add_friend(Parent())
@@ -81,5 +90,7 @@ def test_walk():
     walk(p, graph_interface=Graphable)
     walk(p, graph_max=1, graph_interface=Graphable)
 
-    limited = to_dict(p, limit=('name', 'age'))
-    walk(limited, graph_interface=Graphable)
+    start_limited = to_dict(p, limit=('name', 'age'))
+    walk(start_limited, graph_interface=Graphable)
+
+    walk(TestLimit(), graph_interface=Graphable)

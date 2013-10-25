@@ -1,5 +1,8 @@
 ## Changelog
-current version 0.0.10
+current version 0.0.11
+
+### v0.0.11
+* The walker now checks for a limiting attr on the Graphable interface. You can change the name of this attribute from its default of ``` _dict_attrs ```. The reason it's private is because it's really meta data.
 
 ### v0.0.10
 * Changed the walker to use explicit iterable types so as to avoid unexpected behavior with types that have an ``` '__iter__' ``` property but are not really iterable...
