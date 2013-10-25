@@ -1,5 +1,8 @@
 ## Changelog
-current version 0.0.9
+current version 0.0.10
+
+### v0.0.10
+* Changed the walker to use explicit iterable types so as to avoid unexpected behavior with types that have an ``` '__iter__' ``` property but are not really iterable...
 
 ### v0.0.9
 * Changed the way the recursive walker works. Got rid of the ``` DictInterface ```. The implmentation for the interface is now up to the application developer. The ``` fxn.to_dict(o, limit=()) ``` and the ``` fxn.walk(o, graph_max=None, graph_interface=None) ``` functions provide the abstract functionality necessary to traverse and convert an arbitrary set of data structures / objects into a dictionary with full or limited recursion. The application developer merely specifies the ``` graph_interface ``` argument so that the walker knows when to treat a value as a graphable object. Otherwise, it just treats basic structures.

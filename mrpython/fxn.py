@@ -71,7 +71,7 @@ def walk(value, graph_max=None, graph_interface=None,
             d[k] = r
         return d
 
-    if hasattr(value, '__iter__'):
+    if type(value) in (list, set, tuple):
         l = []
         for v in value:
             r = _recur(v)
