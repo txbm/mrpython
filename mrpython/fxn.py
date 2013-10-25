@@ -39,11 +39,27 @@ def to_dict(o, limit=()):
 
 def walk(
     value, graph_max=None, graph_interface=None, limit_check='_dict_attrs',
-        _graph_path=[], _graph_current=0):
+        _graph_path=[], _graph_current=0, _debug=False):
+
+    if _debug:
+        print '-----------'
+        print 'V: %s' % (value)
+        print 'GM: %s' % (graph_max)
+        print 'GP: %s' % (_graph_path)
+        print 'GC: %s' % (_graph_current)
+        print '-----------'
+        raw_input('s >')
 
     def _recur(v):
         return walk(v, graph_max=graph_max, graph_interface=graph_interface,
-                    _graph_path=_graph_path, _graph_current=_graph_current)
+                    limit_check=limit_check, _graph_path=_graph_path,
+                    _graph_current=_graph_current, _debug=_debug)
+
+    def _to_dict(v):
+        if limit_check:
+            limits = getattr(v, limit_check, ())
+            return to_dict(value, limit=limits)
+        return to_dict(v)
 
     if graph_interface and isinstance(value, graph_interface):
         if graph_max and _graph_current >= graph_max:
@@ -54,18 +70,14 @@ def walk(
                 return 'REC_MAX'
             elif value in _graph_path:
                 return walk(
-                    to_dict(value), graph_max=1,
+                    _to_dict(value), graph_max=1,
                     graph_interface=graph_interface,
                     _graph_path=[])
 
         _graph_path.append(value)
         _graph_current = _graph_current + 1
 
-        if limit_check:
-            limits = getattr(value, limit_check, ())
-            value = to_dict(value, limit=limits)
-        else:
-            value = to_dict(value)
+        value = _to_dict(value)
 
     if type(value) is dict:
         d = {}
@@ -76,7 +88,19 @@ def walk(
             d[k] = r
         return d
 
-    if type(value) in (list, set, tuple):
+    list_type = False
+    list_types = (
+        list,
+        set,
+        tuple
+    )
+
+    for l in list_types:
+        if isinstance(value, l):
+            list_type = True
+            break
+
+    if list_type:
         l = []
         for v in value:
             r = _recur(v)

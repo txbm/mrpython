@@ -1,5 +1,8 @@
 ## Changelog
-current version 0.0.11
+current version 0.0.12
+
+### v0.0.12
+* Fixed a bug in the way that the walker determines list types as well as when to use the ``` limit_check ``` parameter during object -> dict conversion.
 
 ### v0.0.11
 * The walker now checks for a limiting attr on the Graphable interface. You can change the name of this attribute from its default of ``` _dict_attrs ```. The reason it's private is because it's really meta data.
