@@ -88,6 +88,7 @@ def walk(
             d[k] = r
         return d
 
+    '''
     list_type = False
     list_types = (
         list,
@@ -99,6 +100,14 @@ def walk(
         if isinstance(value, l):
             list_type = True
             break
+    '''
+    list_type = False
+    try:
+        iter(value)
+        if not isinstance(value, basestring):
+            list_type = True
+    except TypeError:
+        pass
 
     if list_type:
         l = []

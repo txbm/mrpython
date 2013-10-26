@@ -1,5 +1,8 @@
 ## Changelog
-current version 0.0.12
+current version 0.0.13
+
+### v0.0.13
+* list detection bug fix
 
 ### v0.0.12
 * Fixed a bug in the way that the walker determines list types as well as when to use the ``` limit_check ``` parameter during object -> dict conversion.
