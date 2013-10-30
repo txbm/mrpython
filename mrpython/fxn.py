@@ -20,6 +20,13 @@ def enum(**enums):
     return type('Enum', (), dict(enums.items() + {'items': enums}.items()))
 
 
+def uberenum(*sequential, **named):
+    enums = dict(zip(sequential, range(len(sequential))), **named)
+    by_value = dict((value, key) for key, value in enums.iteritems())
+    enums['by_value'] = by_value
+    return type('Enum', (), enums)
+
+
 def ip2long(ip):
     packed = socket.inet_aton(ip)
     return long(struct.unpack('!L', packed)[0])
