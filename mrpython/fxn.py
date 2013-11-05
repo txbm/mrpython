@@ -4,16 +4,18 @@ import logging
 import inspect
 import socket
 import struct
-from inspect import getmembers, ismethod
+from inspect import (
+    getmembers,
+    ismethod
+)
 
 
 def autolog(message=None, level=logging.DEBUG):
     func = inspect.currentframe().f_back.f_code
     frame = inspect.stack()[1]
-    values = inspect.formatargvalues(*inspect.getargvalues(frame[0]))
     module = inspect.getmodule(frame[0])
     logger = logging.getLogger(module.__name__)
-    logger.log(level, '%s [%s] : %s' % (func.co_name, values, message))
+    logger.log(level, '%s: %s' % (func.co_name, message))
 
 
 def enum(**enums):
@@ -95,19 +97,6 @@ def walk(
             d[k] = r
         return d
 
-    '''
-    list_type = False
-    list_types = (
-        list,
-        set,
-        tuple
-    )
-
-    for l in list_types:
-        if isinstance(value, l):
-            list_type = True
-            break
-    '''
     list_type = False
     try:
         iter(value)

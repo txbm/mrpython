@@ -1,5 +1,8 @@
 ## Changelog
-current version 0.0.14
+current version 0.0.15
+
+### v0.0.15
+* Stopped ``` autolog ``` from printing entire argument list and signature
 
 ### v0.0.14
 * added ``` uberenum ```
