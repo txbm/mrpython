@@ -51,12 +51,12 @@ def walk(
         _graph_path=[], _graph_current=0, _debug=False):
 
     if _debug:
-        print '-----------'
-        print 'V: %s' % (value)
-        print 'GM: %s' % (graph_max)
-        print 'GP: %s' % (_graph_path)
-        print 'GC: %s' % (_graph_current)
-        print '-----------'
+        print('-----------')
+        print('V: %s' % (value))
+        print('GM: %s' % (graph_max))
+        print('GP: %s' % (_graph_path))
+        print('GC: %s' % (_graph_current))
+        print('-----------')
         raw_input('s >')
 
     def _recur(v):
