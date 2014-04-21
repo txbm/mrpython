@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
 
+
+from pprint import pprint
+
 import logging
 import inspect
 import socket
 import struct
+
 from inspect import (
     getmembers,
     ismethod
@@ -115,3 +119,88 @@ def walk(
         return l
 
     return value
+
+
+def traverse(current, previous=None, graphed=None, traversable_interface=None):
+    _iterable_types = (
+        tuple,
+        list,
+        set
+    )
+    _traversable_types = (
+        dict,
+    )
+
+    if not graphed:
+        graphed = {}
+
+    def _is_traversable(thing):
+        if type(thing) in _traversable_types:
+            return True
+        if traversable_interface and isinstance(thing, traversable_interface):
+            return True
+
+    current_type = type(current)
+    if current_type in _iterable_types:
+        return current_type(
+            traverse(
+                x, previous, graphed, traversable_interface) for x in current)
+
+    if _is_traversable(current):
+        if current == previous:
+            return
+        if current in graphed:
+            return graphed[current]
+
+        props = vars(current)
+        p = {}
+        for k, v in props.iteritems():
+            p[k] = traverse(v, current, graphed, traversable_interface)
+        return p
+
+    return current
+
+
+class TInterface(object):
+    pass
+
+_traversable_types = (
+    dict,
+    TInterface
+)
+
+_iterable_types = (
+    tuple,
+    list,
+    set
+)
+
+
+def walker(node):
+    registry = {}
+
+    def walk(node, path=None):
+        p = path or []
+        if isinstance(node, _traversable_types):
+            if node not in registry:
+                registry[node] = {}
+
+            if node in p:
+                return
+                return registry[node]
+
+            p.append(node)
+
+            if not registry[node]:
+                kvps = node
+                if type(node) is not dict:
+                    kvps = vars(node)
+                for k, v in kvps.iteritems():
+                    registry[node].update({k: walk(v, p)})
+
+            return registry[node]
+        elif isinstance(node, _iterable_types):
+            return type(node)(walk(x, p) for x in node)
+        return node
+
+    return walk(node)
