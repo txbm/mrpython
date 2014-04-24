@@ -177,30 +177,43 @@ _iterable_types = (
 
 
 def walker(node):
-    registry = {}
+    graph = {}
+    paths = {}
 
-    def walk(node, path=None):
-        p = path or []
+    def walk(node, last=None):
         if isinstance(node, _traversable_types):
-            if node not in registry:
-                registry[node] = {}
+            node_id = id(node)
 
-            if node in p:
-                return
-                return registry[node]
+            if node_id not in graph:
+                graph[node_id] = {}
 
-            p.append(node)
+            if last:
+                last_id = id(last)
 
-            if not registry[node]:
+                if last_id in paths and node_id in paths[last_id]:
+                    return
+
+                if node_id not in paths:
+                    paths[node_id] = []
+
+                paths[node_id].append(last_id)
+
+            if not graph[node_id]:
                 kvps = node
                 if type(node) is not dict:
                     kvps = vars(node)
+
+                d = {}
                 for k, v in kvps.iteritems():
-                    registry[node].update({k: walk(v, p)})
+                    new_v = walk(v, node)
+                    if not new_v:
+                        continue
+                    d[k] = new_v
+                graph[node_id].update(d)
 
-            return registry[node]
+            return graph[node_id]
         elif isinstance(node, _iterable_types):
-            return type(node)(walk(x, p) for x in node)
+            new_l = [walk(x, last) for x in node]
+            return type(node)(x for x in new_l if x is not None)
         return node
-
     return walk(node)

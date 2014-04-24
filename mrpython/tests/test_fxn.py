@@ -163,6 +163,6 @@ def test_traverse():
     ]
 
     r = Roots()
-    d = walker(r.trees[0])
+    d = walker(r)
     pprint(d)
-    # print json.dumps(d)
+    pprint(json.dumps(d))
