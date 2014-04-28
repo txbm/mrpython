@@ -4,12 +4,13 @@ from setuptools import setup, find_packages
 
 setup(
     name='mrpython',
-    version='0.0.15',
+    version='0.0.16',
     url='http://github.com/petermelias/mrpython',
     license='MIT',
     author='Peter M. Elias',
     author_email='petermelias@gmail.com',
-    description='Collection of things for Python that dont warrant their own libraries.',
+    description='Collection of things for Python that '
+    'dont warrant their own libraries.',
     packages=find_packages(),
     install_requires=[],
     extras_require={
