@@ -22,5 +22,8 @@ A collection of functions, decorators and data that don't seem to fit into any o
 ### Instructions for using walker
 
 1. Inherit your walkable nodes from ``` mrpython.TInterface ```
-2. Pass one of the nodes to ``` walker(node) ``` - or - include a limiting tuple if you like ``` walker(node, limit=('name', 'address')) ```
-3. Store the resulting dictionary :)
+2. Set the ``` _dict_attrs attribute on all of your nodes to limit the extent to which they walk
+3. Pass one of the nodes to ``` walker(node) ```
+4. Store the resulting dictionary.
+
+If you want to override the ``` _dict_attrs ``` default limiting, call the ``` to_dict ``` method on your starting node and supply the ``` limit ``` parameter and then pass the resulting dictionary to the ``` walker(node) ``` function.
