@@ -77,7 +77,7 @@ def walker(node):
                 last_id = id(last)
 
                 if last_id in paths and node_id in paths[last_id]:
-                    return
+                    return u'REC'
 
                 if node_id not in paths:
                     paths[node_id] = []
@@ -90,15 +90,15 @@ def walker(node):
                     kvps = node.to_dict()
 
                 d = {}
+
                 for k, v in kvps.iteritems():
                     new_v = walk(v, node)
-                    if not new_v:
+                    if new_v is u'REC':
                         continue
                     d[k] = new_v
                 graph[node_id].update(d)
-
             return graph[node_id]
-        elif isinstance(node, _iterable_types):
+        elif isinstance(node, _iterable_types) or hasattr(node, '__iter__'):
             new_l = [walk(x, last) for x in node]
             return list(x for x in new_l if x is not None)
         return node

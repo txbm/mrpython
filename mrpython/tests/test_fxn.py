@@ -63,6 +63,10 @@ def test_walker():
 
     class Roots(TInterface):
 
+        _dict_attrs = (
+            'trees',
+        )
+
         def __init__(self):
             self.trees = [
                 AppleTree(self),
@@ -71,6 +75,13 @@ def test_walker():
             ]
 
     class AppleTree(TInterface):
+
+        _dict_attrs = (
+            'root',
+            'apples',
+            'water',
+            'leaf_count'
+        )
 
         def __init__(self, root):
             self.root = root
@@ -83,6 +94,23 @@ def test_walker():
 
     class Apple(TInterface):
 
+        _dict_attrs = (
+            'false_property',
+            'mah_property',
+            'tree',
+            'seeds',
+            'water',
+            'size'
+        )
+
+        @property
+        def mah_property(self):
+            return 'so proper!'
+
+        @property
+        def false_property(self):
+            return False
+
         def __init__(self, tree):
             self.tree = tree
             self.seeds = [AppleSeed(self) for x in xrange(randint(1, 5))]
@@ -91,12 +119,20 @@ def test_walker():
 
     class AppleSeed(TInterface):
 
+        _dict_attrs = (
+            'apple',
+            'water',
+            'potency'
+        )
+
         def __init__(self, apple):
             self.apple = apple
             self.water = choice(waters)
             self.potency = choice(['dull', 'potent', 'juicy'])
 
     class Water(TInterface):
+
+        _dict_attrs = ('name',)
 
         def __init__(self, name):
             self.name = name
