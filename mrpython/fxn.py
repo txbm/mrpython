@@ -62,7 +62,7 @@ _iterable_types = (
 )
 
 
-def walker(node, limit=None):
+def walker(node):
     graph = {}
     paths = {}
 
@@ -87,7 +87,7 @@ def walker(node, limit=None):
             if not graph[node_id]:
                 kvps = node
                 if type(node) is not dict:
-                    kvps = vars(node)
+                    kvps = node.to_dict()
 
                 d = {}
                 for k, v in kvps.iteritems():
@@ -100,6 +100,6 @@ def walker(node, limit=None):
             return graph[node_id]
         elif isinstance(node, _iterable_types):
             new_l = [walk(x, last) for x in node]
-            return type(node)(x for x in new_l if x is not None)
+            return list(x for x in new_l if x is not None)
         return node
     return walk(node)
