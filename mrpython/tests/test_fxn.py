@@ -3,7 +3,12 @@
 
 import logging
 
+from pprint import pprint
+
 from nose.tools.trivial import assert_equal
+from nose.tools import nottest
+
+from mrpython import TInterface
 
 from mrpython.fxn import (
     autolog,
@@ -11,8 +16,7 @@ from mrpython.fxn import (
     ip2long,
     long2ip,
     to_dict,
-    walker,
-    TInterface
+    to_dict_recursive
 )
 
 from random import (
@@ -58,8 +62,7 @@ def test_to_dict():
     r = to_dict(t, limit=('country'))
     assert_equal(r, {'country': 'USA'})
 
-
-def test_walker():
+def test_to_dict_recursive_multi_branch():
 
     class Roots(TInterface):
 
@@ -143,4 +146,38 @@ def test_walker():
         Water('bottle')
     ]
 
-    walker(Roots())
+    result = to_dict_recursive(Roots())
+
+def test_to_dict_recursive_circular():
+
+    class Brother(TInterface):
+
+        _dict_attrs = (
+            'name',
+            'siblings'
+        )
+
+        def __init__(self, name):
+            self.name = name
+            self.siblings = []
+
+        def __repr__(self):
+            return 'Brother: %s' % (self.name)
+
+    tom = Brother('tom')
+    jerry = Brother('jerry')
+    tom.siblings.append(jerry)
+    jerry.siblings.append(tom)
+
+    result = to_dict_recursive(tom)
+    result2 = to_dict_recursive(jerry)
+
+    assert_equal(
+        result,
+        {'name': 'tom', 'siblings': [{'name': 'jerry', 'siblings': []}]}
+    )
+
+    assert_equal(
+        result2,
+        {'name': 'jerry', 'siblings': [{'name': 'tom', 'siblings': []}]}
+    )

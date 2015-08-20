@@ -11,10 +11,6 @@ from inspect import (
     ismethod
 )
 
-
-from mrpython import TInterface
-
-
 def autolog(message=None, level=logging.DEBUG):
     func = inspect.currentframe().f_back.f_code
     frame = inspect.stack()[1]
@@ -22,17 +18,14 @@ def autolog(message=None, level=logging.DEBUG):
     logger = logging.getLogger(module.__name__)
     logger.log(level, '%s: %s' % (func.co_name, message))
 
-
 def enum(**enums):
     return type('Enum', (), dict(enums.items() + {'items': enums}.items()))
-
 
 def uberenum(*sequential, **named):
     enums = dict(zip(sequential, range(len(sequential))), **named)
     by_value = dict((value, key) for key, value in enums.iteritems())
     enums['by_value'] = by_value
     return type('Enum', (), enums)
-
 
 def ip2long(ip):
     packed = socket.inet_aton(ip)
@@ -42,7 +35,6 @@ def ip2long(ip):
 def long2ip(lg):
     return socket.inet_ntoa(struct.pack('!L', lg))
 
-
 def to_dict(o, limit=None):
     m = getmembers(o, lambda x: not ismethod(x))
     m = [i for i in m if not i[0].startswith('_')]
@@ -50,56 +42,70 @@ def to_dict(o, limit=None):
         m = [i for i in m if i[0] in limit]
     return dict(m)
 
-_traversable_types = (
-    dict,
-    TInterface
-)
-
 _iterable_types = (
     tuple,
     list,
     set
 )
 
+class Circular(object):
+    pass
 
-def walker(node):
-    graph = {}
-    paths = {}
+def _is_collection(node):
+    node_type = type(node)
+    return node_type in _iterable_types or hasattr(node, '__iter__')
 
-    def walk(node, last=None):
-        if isinstance(node, _traversable_types):
-            node_id = id(node)
+def _is_dict_like(node):
+    node_type = type(node)
+    return node_type in (dict,)
 
-            if node_id not in graph:
-                graph[node_id] = {}
+def _is_traversable(node):
+    return hasattr(node, 'to_dict')
 
-            if last:
-                last_id = id(last)
+def _is_circular(node):
+    return isinstance(node, Circular)
 
-                if last_id in paths and node_id in paths[last_id]:
-                    return u'REC'
+def to_dict_recursive(node, last_node=None, paths=None):
+    if paths is None:
+        paths = {}
 
-                if node_id not in paths:
-                    paths[node_id] = []
+    if _is_dict_like(node):
+        new_dict = {}
+        for key, value in node.iteritems():
+            result = to_dict_recursive(value, last_node, paths)
+            if _is_circular(result):
+                continue
+            new_dict[key] = result
 
-                paths[node_id].append(last_id)
+        return new_dict
 
-            if not graph[node_id]:
-                kvps = node
-                if type(node) is not dict:
-                    kvps = node.to_dict()
+    if _is_collection(node):
+        new_list = []
 
-                d = {}
+        for item in node:
+            result = to_dict_recursive(item, last_node, paths)
+            if _is_circular(result):
+                continue
+            new_list.append(result)
 
-                for k, v in kvps.iteritems():
-                    new_v = walk(v, node)
-                    if new_v is u'REC':
-                        continue
-                    d[k] = new_v
-                graph[node_id].update(d)
-            return graph[node_id]
-        elif isinstance(node, _iterable_types) or hasattr(node, '__iter__'):
-            new_l = [walk(x, last) for x in node]
-            return list(x for x in new_l if x is not None)
-        return node
-    return walk(node)
+        return new_list
+
+    if _is_traversable(node):
+        node_id = id(node)
+        last_node_id = None
+
+        if last_node:
+            last_node_id = id(last_node)
+
+            if last_node_id in paths and node_id in paths[last_node_id]:
+                return Circular()
+
+            if node_id not in paths:
+                paths[node_id] = ()
+
+            paths[node_id] += (last_node_id,)
+
+        node_dict = node.to_dict()
+        return to_dict_recursive(node_dict, last_node=node, paths=paths)
+
+    return node
