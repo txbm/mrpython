@@ -1,5 +1,10 @@
 ## Changelog
-current version 0.0.15
+current version 0.0.18
+
+### v0.0.16,17,18
+* Walker fixes
+* `walker` renamed to `to_dict_recursive`
+* improvements to recursive algorithm for node traversal
 
 ### v0.0.15
 * Stopped ``` autolog ``` from printing entire argument list and signature
