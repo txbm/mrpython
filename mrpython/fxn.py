@@ -71,6 +71,7 @@ def to_dict_recursive(node, last_node=None, paths=None):
 
     if _is_dict_like(node):
         new_dict = {}
+
         for key, value in node.iteritems():
             result = to_dict_recursive(value, last_node, paths)
             if _is_circular(result):
@@ -106,6 +107,6 @@ def to_dict_recursive(node, last_node=None, paths=None):
             paths[node_id] += (last_node_id,)
 
         node_dict = node.to_dict()
-        return to_dict_recursive(node_dict, last_node=node, paths=paths)
+        return to_dict_recursive(node_dict, node, paths)
 
     return node
