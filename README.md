@@ -1,5 +1,5 @@
 # Mr. Python
-[![Build Status](https://travis-ci.org/petermelias/mrpython.png?branch=master)](https://travis-ci.org/petermelias/mrpython) [![Coverage Status](https://coveralls.io/repos/petermelias/mrpython/badge.png?branch=master)](https://coveralls.io/r/petermelias/mrpython?branch=master) [![Downloads](https://pypip.in/d/mrpython/badge.png)](https://pypi.python.org/pypi/mrpython/) [![Downloads](https://pypip.in/v/mrpython/badge.png)](https://pypi.python.org/pypi/mrpython/)
+[![Build Status](https://travis-ci.org/petermelias/mrpython.png?branch=master)](https://travis-ci.org/petermelias/mrpython) [![Coverage Status](https://coveralls.io/repos/petermelias/mrpython/badge.png?branch=master)](https://coveralls.io/r/petermelias/mrpython?branch=master) [![Downloads](https://img.shields.io/pypi/dm/mrpython.svg)](https://pypi.python.org/pypi/mrpython/) [![Downloads](https://img.shields.io/pypi/v/mrpython.svg)](https://pypi.python.org/pypi/mrpython/)
 
 A collection of functions, decorators and data that don't seem to fit into any of my (or anybody else's) libraries.
 
